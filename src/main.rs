@@ -1,6 +1,7 @@
 use tcod::colors::*;
 use tcod::console::*;
 
+// defining constants
 const SCREEN_WIDTH: i32 = 90;
 const SCREEN_HEIGHT: i32 = 60;
 const LIMIT_FPS: i32 = 20;
@@ -16,7 +17,12 @@ struct Tcod {
 
 
 fn handle_keys(tcod: &mut Tcod, player_x: &mut i32, player_y: &mut i32) -> bool {
-        // handle keys
+    // handle keys
+    // You can choose to import packages within functions rather 
+    // than in the overall program this makes it a bit faster
+    // if you don't call the function the package isn't imported
+    // Also makes the code make more sense e.g. you can see what 
+    // package is being used for what part of the code 
     use tcod::input::Key;
     use tcod::input::KeyCode::*;
     let key = tcod.root.wait_for_keypress(true);
@@ -33,6 +39,9 @@ fn handle_keys(tcod: &mut Tcod, player_x: &mut i32, player_y: &mut i32) -> bool 
 
         Key { code: Escape, .. } => return true, // exiting game
 
+        // if the key matches the code (Up, Down) then the code after the arrow executes
+        // the .. after Up indicates that it should ignore all other input and
+        // only work if its Up etc.
         Key { code: Up, .. } => *player_y -= 1,
         Key { code: Down, ..} => *player_y += 1,
         Key { code: Right, ..} => *player_x += 1,
@@ -58,9 +67,11 @@ fn main() {
 
     let mut tcod = Tcod { root };
 
+    // this sets our game windows FPS to be limited at the FPS limit (20)
     tcod::system::set_fps(LIMIT_FPS);
     
-
+    // player starts in the centre of the sc
+    // "mut" keyword means that our variables are editable (mutable!)
     let mut player_x = SCREEN_WIDTH / 2;
     let mut player_y = SCREEN_HEIGHT / 2;
 
